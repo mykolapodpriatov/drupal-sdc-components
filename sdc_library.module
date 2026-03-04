@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations for the SDC Library module.
+ *
+ * This module ships a set of reusable Single Directory Components.
+ * It has no UI of its own — themes and other modules consume the
+ * components via {% include 'sdc_library:component_id' %}.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function sdc_library_help(string $route_name, RouteMatchInterface $route_match): string {
+  if ($route_name !== 'help.page.sdc_library') {
+    return '';
+  }
+
+  $output = '<h2>' . t('SDC Library') . '</h2>';
+  $output .= '<p>' . t('Ships reusable Single Directory Components (SDC) for Drupal 10.3+/11.') . '</p>';
+  $output .= '<h3>' . t('Available components') . '</h3>';
+  $output .= '<ul>';
+  $output .= '<li><code>sdc_library:card</code> — ' . t('Article card with variants and footer slot.') . '</li>';
+  $output .= '<li><code>sdc_library:accordion</code> — ' . t('Native &lt;details&gt; accordion with optional single-open behaviour.') . '</li>';
+  $output .= '<li><code>sdc_library:tabs</code> — ' . t('ARIA-compliant tablist with full keyboard support.') . '</li>';
+  $output .= '<li><code>sdc_library:hero</code> — ' . t('Responsive hero with full/split/compact variants.') . '</li>';
+  $output .= '</ul>';
+  $output .= '<p>' . t('See README.md and the examples/ directory for paragraph/block integration.') . '</p>';
+
+  return $output;
+}

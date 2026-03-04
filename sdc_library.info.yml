@@ -1,0 +1,9 @@
+name: SDC Library
+type: module
+description: 'Reusable Single Directory Components — Card, Accordion, Tabs, Hero — for any Drupal 10.3+/11 theme.'
+package: SDC
+core_version_requirement: ^10.3 || ^11
+php: 8.3
+
+# Components live under components/ and are auto-discovered by core's SDC plugin manager.
+# Themes can include them via {% include 'sdc_library:card' %}.
