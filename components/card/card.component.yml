@@ -1,0 +1,66 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Card
+status: stable
+description: 'Article card with optional image, three visual variants and a footer slot.'
+
+props:
+  type: object
+  required:
+    - title
+    - body
+  properties:
+    title:
+      type: string
+      title: Title
+      description: 'Heading rendered as an <h3> inside the card.'
+      examples:
+        - 'Drupal 11 is out'
+    body:
+      type: string
+      title: Body
+      description: 'Short summary or teaser text. Plain string; pass markup-safe content if HTML is desired.'
+      examples:
+        - 'A concise overview of what Drupal 11 brings to the table.'
+    image_src:
+      type:
+        - string
+        - 'null'
+      title: 'Image URL'
+      description: 'Optional. When set, the card renders an <img> above the content.'
+      examples:
+        - '/themes/custom/mytheme/images/card.webp'
+    image_alt:
+      type:
+        - string
+        - 'null'
+      title: 'Image alt text'
+      description: 'Required when image_src is set. Use an empty string for purely decorative imagery.'
+      examples:
+        - 'Photo of a desk with a laptop'
+    variant:
+      type: string
+      title: Variant
+      description: 'Visual style. "featured" highlights, "compact" trims paddings for dense lists.'
+      enum:
+        - default
+        - featured
+        - compact
+      default: default
+    url:
+      type:
+        - string
+        - 'null'
+      title: URL
+      description: 'Optional. When set, the title becomes a link.'
+      examples:
+        - '/node/42'
+
+slots:
+  footer:
+    title: Footer
+    description: 'Optional footer area below the body — typically a CTA button or meta block.'
+
+libraryOverrides:
+  dependencies:
+    - core/drupal

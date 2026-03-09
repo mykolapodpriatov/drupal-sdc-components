@@ -1,0 +1,55 @@
+{#
+/**
+ * @file
+ * Card component.
+ *
+ * Props:
+ *   - title (string, required)
+ *   - body (string, required)
+ *   - image_src (string|null)
+ *   - image_alt (string|null)
+ *   - variant (default|featured|compact)
+ *   - url (string|null)
+ *
+ * Slots:
+ *   - footer
+ */
+#}
+{% set variant = variant|default('default') %}
+{% set classes = [
+  'c-card',
+  'c-card--' ~ variant,
+  image_src ? 'c-card--has-image' : 'c-card--no-image',
+] %}
+
+<article class="{{ classes|join(' ') }}" data-component="card" data-variant="{{ variant }}">
+  {% if image_src %}
+    <div class="c-card__media">
+      <img
+        class="c-card__image"
+        src="{{ image_src }}"
+        alt="{{ image_alt|default('') }}"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  {% endif %}
+
+  <div class="c-card__body">
+    <h3 class="c-card__title">
+      {% if url %}
+        <a class="c-card__link" href="{{ url }}">{{ title }}</a>
+      {% else %}
+        {{ title }}
+      {% endif %}
+    </h3>
+
+    <p class="c-card__text">{{ body }}</p>
+  </div>
+
+  {% if block('footer') is defined or footer is not empty %}
+    <footer class="c-card__footer">
+      {% block footer %}{{ footer }}{% endblock %}
+    </footer>
+  {% endif %}
+</article>

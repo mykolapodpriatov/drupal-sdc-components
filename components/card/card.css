@@ -1,0 +1,166 @@
+/**
+ * Card component.
+ *
+ * Tokens are exposed as CSS custom properties so consuming themes can override
+ * them without touching the component source.
+ */
+
+.c-card {
+  --c-card-radius: 0.75rem;
+  --c-card-padding: 1.25rem;
+  --c-card-gap: 0.75rem;
+  --c-card-bg: var(--color-surface, #ffffff);
+  --c-card-fg: var(--color-text, #1a1a1a);
+  --c-card-muted: var(--color-text-muted, #5a5a5a);
+  --c-card-border: var(--color-border, #e4e4e7);
+  --c-card-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --c-card-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.06), 0 12px 24px rgba(0, 0, 0, 0.08);
+  --c-card-accent: var(--color-accent, #0a66c2);
+  --c-card-transition: 200ms ease;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--c-card-gap);
+  padding: 0;
+  background: var(--c-card-bg);
+  color: var(--c-card-fg);
+  border: 1px solid var(--c-card-border);
+  border-radius: var(--c-card-radius);
+  box-shadow: var(--c-card-shadow);
+  overflow: hidden;
+  transition: box-shadow var(--c-card-transition), transform var(--c-card-transition);
+  container-type: inline-size;
+}
+
+.c-card:has(.c-card__link:hover),
+.c-card:has(.c-card__link:focus-visible) {
+  box-shadow: var(--c-card-shadow-hover);
+  transform: translateY(-1px);
+}
+
+/* Media ------------------------------------------------------------------- */
+
+.c-card__media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--c-card-fg) 6%, transparent);
+}
+
+.c-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--c-card-transition);
+}
+
+.c-card:has(.c-card__link:hover) .c-card__image {
+  transform: scale(1.02);
+}
+
+/* Body -------------------------------------------------------------------- */
+
+.c-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: var(--c-card-padding);
+  flex: 1 1 auto;
+}
+
+.c-card__title {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 0;
+}
+
+.c-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.c-card__link:focus-visible {
+  outline: 2px solid var(--c-card-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.c-card__link:hover {
+  color: var(--c-card-accent);
+}
+
+.c-card__text {
+  margin: 0;
+  color: var(--c-card-muted);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+/* Footer ------------------------------------------------------------------ */
+
+.c-card__footer {
+  padding: 0 var(--c-card-padding) var(--c-card-padding);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Variants ---------------------------------------------------------------- */
+
+.c-card--featured {
+  --c-card-radius: 1rem;
+  border-color: var(--c-card-accent);
+  border-width: 2px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--c-card-accent) 18%, transparent);
+}
+
+.c-card--featured .c-card__title {
+  font-size: 1.375rem;
+}
+
+.c-card--compact {
+  --c-card-padding: 0.875rem;
+  --c-card-gap: 0.5rem;
+  --c-card-radius: 0.5rem;
+}
+
+.c-card--compact .c-card__title {
+  font-size: 1rem;
+}
+
+.c-card--compact .c-card__media {
+  aspect-ratio: 4 / 3;
+}
+
+/* Container query — when the card is wider than 36rem, lay out side-by-side. */
+@container (min-width: 36rem) {
+  .c-card--has-image {
+    flex-direction: row;
+  }
+
+  .c-card--has-image .c-card__media {
+    flex: 0 0 40%;
+    aspect-ratio: auto;
+  }
+
+  .c-card--has-image .c-card__body {
+    flex: 1 1 60%;
+  }
+
+  .c-card--has-image .c-card__footer {
+    padding-left: 0;
+  }
+}
+
+/* Reduced motion ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .c-card,
+  .c-card__image {
+    transition: none;
+  }
+
+  .c-card:has(.c-card__link:hover) {
+    transform: none;
+  }
+}
