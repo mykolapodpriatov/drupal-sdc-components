@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Accordion component.
+ *
+ * Uses native <details>/<summary> for zero-JS baseline. JS upgrades it with
+ * smooth height animation and (optionally) single-open behaviour.
+ */
+#}
+{% set variant = variant|default('default') %}
+{% set allow_multiple = allow_multiple|default(false) %}
+{% set classes = [
+  'c-accordion',
+  'c-accordion--' ~ variant,
+  allow_multiple ? 'c-accordion--multi' : 'c-accordion--single',
+] %}
+
+<div
+  class="{{ classes|join(' ') }}"
+  data-component="accordion"
+  data-allow-multiple="{{ allow_multiple ? 'true' : 'false' }}"
+>
+  {% for item in items %}
+    <details class="c-accordion__item" name="{{ allow_multiple ? '' : 'sdc-accordion-' ~ random() }}">
+      <summary class="c-accordion__summary">
+        <span class="c-accordion__title">{{ item.title }}</span>
+        <svg
+          class="c-accordion__icon"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </summary>
+
+      <div class="c-accordion__panel">
+        <div class="c-accordion__content">
+          {{ item.body }}
+        </div>
+      </div>
+    </details>
+  {% endfor %}
+</div>

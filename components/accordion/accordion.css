@@ -1,0 +1,130 @@
+/**
+ * Accordion component.
+ *
+ * Smooth open/close uses the grid-template-rows 0fr → 1fr trick on the panel.
+ * Falls back to instant toggle without affecting layout.
+ */
+
+.c-accordion {
+  --c-accordion-radius: 0.5rem;
+  --c-accordion-padding: 1rem;
+  --c-accordion-gap: 0;
+  --c-accordion-bg: var(--color-surface, #ffffff);
+  --c-accordion-fg: var(--color-text, #1a1a1a);
+  --c-accordion-muted: var(--color-text-muted, #5a5a5a);
+  --c-accordion-border: var(--color-border, #e4e4e7);
+  --c-accordion-accent: var(--color-accent, #0a66c2);
+  --c-accordion-transition: 240ms ease;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--c-accordion-gap);
+  background: var(--c-accordion-bg);
+  border: 1px solid var(--c-accordion-border);
+  border-radius: var(--c-accordion-radius);
+  overflow: hidden;
+}
+
+.c-accordion__item + .c-accordion__item {
+  border-top: 1px solid var(--c-accordion-border);
+}
+
+.c-accordion__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--c-accordion-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+  color: var(--c-accordion-fg);
+  user-select: none;
+}
+
+/* Remove default disclosure triangle. */
+.c-accordion__summary::-webkit-details-marker { display: none; }
+.c-accordion__summary::marker { content: ''; }
+
+.c-accordion__summary:hover {
+  background: color-mix(in srgb, var(--c-accordion-accent) 4%, transparent);
+}
+
+.c-accordion__summary:focus-visible {
+  outline: 2px solid var(--c-accordion-accent);
+  outline-offset: -2px;
+}
+
+.c-accordion__title {
+  flex: 1 1 auto;
+}
+
+.c-accordion__icon {
+  flex: 0 0 auto;
+  transition: transform var(--c-accordion-transition);
+  color: var(--c-accordion-muted);
+}
+
+.c-accordion__item[open] .c-accordion__icon {
+  transform: rotate(180deg);
+  color: var(--c-accordion-accent);
+}
+
+/* Panel — uses grid-template-rows for the smooth animation. */
+.c-accordion__panel {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--c-accordion-transition);
+}
+
+.c-accordion__content {
+  overflow: hidden;
+  padding: 0 var(--c-accordion-padding) var(--c-accordion-padding);
+  color: var(--c-accordion-muted);
+  line-height: 1.6;
+}
+
+.c-accordion__content > * {
+  margin: 0;
+}
+
+.c-accordion__content > * + * {
+  margin-top: 0.5em;
+}
+
+/* JS-enhanced state — JS toggles `is-animating` while running the height transition. */
+.c-accordion--js .c-accordion__panel {
+  grid-template-rows: 0fr;
+}
+
+.c-accordion--js .c-accordion__item[open] .c-accordion__panel,
+.c-accordion--js .c-accordion__item.is-opening .c-accordion__panel {
+  grid-template-rows: 1fr;
+}
+
+/* Variants ---------------------------------------------------------------- */
+
+.c-accordion--bordered {
+  border: none;
+  gap: 0.5rem;
+  background: transparent;
+}
+
+.c-accordion--bordered .c-accordion__item {
+  border: 1px solid var(--c-accordion-border);
+  border-radius: var(--c-accordion-radius);
+  background: var(--c-accordion-bg);
+  overflow: hidden;
+}
+
+.c-accordion--bordered .c-accordion__item + .c-accordion__item {
+  border-top: 1px solid var(--c-accordion-border);
+}
+
+/* Reduced motion ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .c-accordion__icon,
+  .c-accordion__panel {
+    transition: none;
+  }
+}

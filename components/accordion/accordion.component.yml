@@ -1,0 +1,45 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Accordion
+status: stable
+description: 'Native <details>-based accordion with optional single-open behaviour and smooth open/close animation.'
+
+props:
+  type: object
+  required:
+    - items
+  properties:
+    items:
+      type: array
+      title: Items
+      description: 'List of {title, body} pairs. Each becomes a collapsible panel. body may contain markup-safe HTML.'
+      items:
+        type: object
+        required:
+          - title
+          - body
+        properties:
+          title:
+            type: string
+            title: Title
+          body:
+            type: string
+            title: Body
+            description: 'Panel content. Pass `|raw` or trusted markup if HTML is desired.'
+    allow_multiple:
+      type: boolean
+      title: 'Allow multiple open'
+      description: 'When false (default), opening a panel closes the others. When true, panels behave independently.'
+      default: false
+    variant:
+      type: string
+      title: Variant
+      description: 'Visual style — "bordered" wraps each item in its own border, "default" merges them.'
+      enum:
+        - default
+        - bordered
+      default: default
+
+libraryOverrides:
+  dependencies:
+    - core/drupal
