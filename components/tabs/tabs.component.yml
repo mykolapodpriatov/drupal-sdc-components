@@ -1,0 +1,44 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Tabs
+status: stable
+description: 'WAI-ARIA Authoring-Practices tablist with full keyboard support (←/→, Home/End) and a no-JS fallback (all panels visible).'
+
+props:
+  type: object
+  required:
+    - tabs
+  properties:
+    tabs:
+      type: array
+      title: Tabs
+      description: 'Ordered list of {label, panel_id} pairs. panel_id must match the id of a <section> rendered inside the panels slot — see usage docs.'
+      items:
+        type: object
+        required:
+          - label
+          - panel_id
+        properties:
+          label:
+            type: string
+            title: Label
+            description: 'Visible text on the tab button.'
+          panel_id:
+            type: string
+            title: 'Panel ID'
+            description: 'Anchor — must be unique on the page.'
+    initial:
+      type: integer
+      title: 'Initial tab'
+      description: 'Zero-based index of the tab to open on first render.'
+      minimum: 0
+      default: 0
+
+slots:
+  panels:
+    title: Panels
+    description: 'Slot to render the tab panels. Each must be a <section id="<panel_id>" role="tabpanel">. When the slot is empty, the component renders just the tablist (use that mode if you build the panels yourself elsewhere on the page).'
+
+libraryOverrides:
+  dependencies:
+    - core/drupal

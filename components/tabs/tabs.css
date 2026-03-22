@@ -1,0 +1,92 @@
+/**
+ * Tabs component.
+ *
+ * No-JS fallback: tablist styled, all panels visible.
+ * JS-enhanced: only the active panel is rendered.
+ */
+
+.c-tabs {
+  --c-tabs-bg: var(--color-surface, #ffffff);
+  --c-tabs-fg: var(--color-text, #1a1a1a);
+  --c-tabs-muted: var(--color-text-muted, #5a5a5a);
+  --c-tabs-border: var(--color-border, #e4e4e7);
+  --c-tabs-accent: var(--color-accent, #0a66c2);
+  --c-tabs-radius: 0.5rem;
+  --c-tabs-padding: 0.625rem 1rem;
+  --c-tabs-gap: 0.25rem;
+}
+
+.c-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--c-tabs-gap);
+  border-bottom: 1px solid var(--c-tabs-border);
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.c-tabs__tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: var(--c-tabs-padding);
+  font: inherit;
+  font-weight: 500;
+  color: var(--c-tabs-muted);
+  cursor: pointer;
+  border-radius: var(--c-tabs-radius) var(--c-tabs-radius) 0 0;
+  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+  margin-bottom: -1px;
+}
+
+.c-tabs__tab:hover {
+  color: var(--c-tabs-fg);
+  background: color-mix(in srgb, var(--c-tabs-accent) 6%, transparent);
+}
+
+.c-tabs__tab:focus-visible {
+  outline: 2px solid var(--c-tabs-accent);
+  outline-offset: 2px;
+}
+
+.c-tabs__tab.is-active,
+.c-tabs__tab[aria-selected="true"] {
+  color: var(--c-tabs-fg);
+  border-bottom-color: var(--c-tabs-accent);
+  background: transparent;
+}
+
+.c-tabs__panels {
+  color: var(--c-tabs-fg);
+}
+
+.c-tabs__panels > [role="tabpanel"] {
+  padding: 0.5rem 0;
+}
+
+.c-tabs__panels > [role="tabpanel"]:focus-visible {
+  outline: 2px solid var(--c-tabs-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* JS-enhanced — hide inactive panels. */
+.c-tabs.is-enhanced .c-tabs__panels > [role="tabpanel"][hidden] {
+  display: none;
+}
+
+/* Forced-colors / High Contrast support. */
+@media (forced-colors: active) {
+  .c-tabs__tab.is-active {
+    border-bottom-color: Highlight;
+    color: Highlight;
+  }
+}
+
+/* Reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .c-tabs__tab {
+    transition: none;
+  }
+}
