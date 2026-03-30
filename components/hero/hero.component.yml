@@ -1,0 +1,56 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Hero
+status: stable
+description: 'Responsive page-top hero with full / split / compact layouts. Supports a CTA button and optional background image.'
+
+props:
+  type: object
+  required:
+    - heading
+  properties:
+    heading:
+      type: string
+      title: Heading
+      description: 'Rendered as <h1> inside the hero header.'
+    subheading:
+      type:
+        - string
+        - 'null'
+      title: Subheading
+      description: 'Optional supporting text below the heading.'
+    image_src:
+      type:
+        - string
+        - 'null'
+      title: 'Image URL'
+      description: 'Optional. Used in <picture> as the default src; consuming code may add additional <source> elements via the picture slot.'
+    image_alt:
+      type:
+        - string
+        - 'null'
+      title: 'Image alt text'
+      description: 'Required when image_src is set. Empty string for purely decorative imagery.'
+    cta_label:
+      type:
+        - string
+        - 'null'
+      title: 'CTA label'
+    cta_url:
+      type:
+        - string
+        - 'null'
+      title: 'CTA URL'
+    variant:
+      type: string
+      title: Variant
+      description: 'Layout style. "full" — image as background, text overlaid. "split" — text + image side-by-side. "compact" — text-only, reduced height.'
+      enum:
+        - full
+        - split
+        - compact
+      default: split
+
+libraryOverrides:
+  dependencies:
+    - core/drupal
