@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Theme override for the `card_paragraph` paragraph bundle.
+ *
+ * Delegates rendering to the sdc_library:card component using {% embed %} so
+ * the footer slot can be overridden with the optional field_cta_link field.
+ *
+ * Available variables (subset):
+ *   - paragraph: the paragraph entity.
+ *   - content:   render array — used as fallback to ensure cache metadata bubbles.
+ *
+ * Field map:
+ *   field_title   → title
+ *   field_body    → body
+ *   field_image   → image_src + image_alt
+ *   field_variant → variant
+ *   field_cta_link (optional) → footer slot
+ */
+#}
+{% set image_uri = paragraph.field_image.entity.uri.value|default(null) %}
+{% set image_src = image_uri ? file_url(image_uri) : null %}
+{% set image_alt = paragraph.field_image.alt|default(null) %}
+{% set variant   = paragraph.field_variant.value|default('default') %}
+{% set has_cta   = paragraph.field_cta_link.0.url is defined %}
+
+{# Render-array bubbling: render(content) once so cache tags / contexts attach. #}
+{% set _bubble = content|render %}
+
+{% embed 'sdc_library:card' with {
+  title:     paragraph.field_title.value,
+  body:      paragraph.field_body.processed,
+  image_src: image_src,
+  image_alt: image_alt,
+  variant:   variant,
+  url:       has_cta ? paragraph.field_cta_link.0.url : null,
+} %}
+  {% block footer %}
+    {% if has_cta %}
+      <a class="c-card__cta" href="{{ paragraph.field_cta_link.0.url }}">
+        {{ paragraph.field_cta_link.0.title|default('Read more'|t) }}
+      </a>
+    {% endif %}
+  {% endblock %}
+{% endembed %}

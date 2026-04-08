@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: card_paragraph
+label: 'Card'
+icon_uuid: null
+icon_default: null
+description: 'A card with title, body, image, optional CTA and visual variant. Renders through sdc_library:card.'
+behavior_plugins: {  }

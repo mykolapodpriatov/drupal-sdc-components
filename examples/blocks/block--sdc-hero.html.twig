@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Block template override that renders the sdc_library:hero component.
+ *
+ * Reads label / configuration / fields from any block whose plugin id starts
+ * with `sdc_hero` (e.g. a "Hero" block bundle, or a custom block plugin that
+ * exposes the same field keys via configuration).
+ *
+ * Available variables:
+ *   - configuration: block instance configuration array.
+ *   - content:       the render array — used to extract field deltas.
+ *   - label:         the block label, used as the heading fallback.
+ */
+#}
+{# Render-array bubbling: ensure cache metadata propagates. #}
+{% set _bubble = content|render %}
+
+{% set heading    = configuration.heading|default(label) %}
+{% set subheading = configuration.subheading|default(null) %}
+{% set image_src  = configuration.image_src|default(null) %}
+{% set image_alt  = configuration.image_alt|default('') %}
+{% set cta_label  = configuration.cta_label|default(null) %}
+{% set cta_url    = configuration.cta_url|default(null) %}
+{% set variant    = configuration.variant|default('split') %}
+
+{% include 'sdc_library:hero' with {
+  heading:    heading,
+  subheading: subheading,
+  image_src:  image_src,
+  image_alt:  image_alt,
+  cta_label:  cta_label,
+  cta_url:    cta_url,
+  variant:    variant,
+} %}
