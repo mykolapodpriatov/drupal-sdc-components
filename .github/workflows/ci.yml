@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  yaml-lint:
+    name: YAML lint (component schemas)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pipx install yamllint
+
+      - name: Lint component schemas
+        run: |
+          yamllint -d '{extends: default, rules: {line-length: disable, document-start: disable, truthy: {check-keys: false}, indentation: {spaces: 2}}}' components/
+
+      - name: Lint info / config YAML
+        run: |
+          yamllint -d '{extends: relaxed, rules: {line-length: disable}}' sdc_library.info.yml examples/config/
+
+  stylelint:
+    name: Stylelint (component CSS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install stylelint
+        run: |
+          npm init -y > /dev/null
+          npm install --no-save stylelint@^16 stylelint-config-standard@^36
+
+      - name: Run stylelint
+        run: |
+          npx stylelint --config '{"extends": "stylelint-config-standard", "rules": {"selector-class-pattern": null, "no-descending-specificity": null, "media-feature-range-notation": null, "alpha-value-notation": null, "color-function-notation": null, "custom-property-pattern": null}}' "components/**/*.css"
+
+  prettier:
+    name: Prettier (component JS + stories)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install prettier
+        run: npm install --no-save prettier@^3
+
+      - name: Run prettier --check
+        run: |
+          npx prettier --check "components/**/*.js" "storybook/stories/**/*.js" "storybook/.storybook/**/*.js"
+
+  phpcs:
+    name: Drupal coding standards (PHPCS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Drupal coder + PHPCS
+        run: |
+          composer global require --no-interaction "drupal/coder:^8.3" "dealerdirect/phpcodesniffer-composer-installer:^1.0"
+          echo "${HOME}/.composer/vendor/bin" >> "$GITHUB_PATH"
+
+      - name: Run PHPCS
+        run: |
+          phpcs --standard=Drupal,DrupalPractice --extensions=php,module,inc,install,test,profile,theme --warning-severity=0 sdc_library.module

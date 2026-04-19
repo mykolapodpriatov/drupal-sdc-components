@@ -1,0 +1,8 @@
+node_modules/
+vendor/
+storybook-static/
+*.twig
+*.yml
+*.md
+LICENSE
+CHANGELOG.md
