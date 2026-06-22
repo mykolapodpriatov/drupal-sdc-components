@@ -36,18 +36,19 @@ See the official docs: <https://www.drupal.org/docs/develop/theming-drupal/using
 
 ## Installation
 
-### Via Composer (path repository)
+### Via Composer (VCS repository)
 
 ```bash
-composer config repositories.sdc-library path /path/to/drupal-sdc-components
-composer require nikolaj/sdc-library:@dev
+composer config repositories.sdc-components vcs https://github.com/mykolapodpriatov/drupal-sdc-components
+composer require mykolapodpriatov/drupal-sdc-components:@dev
 drush en sdc_library -y
 ```
 
-### Via packagist / drupal.org
+### Via Composer (path repository)
 
 ```bash
-composer require drupal/sdc_library
+composer config repositories.sdc-components path /path/to/drupal-sdc-components
+composer require mykolapodpriatov/drupal-sdc-components:@dev
 drush en sdc_library -y
 ```
 
@@ -117,16 +118,18 @@ That's it — components are auto-discovered. No further configuration needed.
 } %}
 ```
 
-## Screenshots
+## Preview
 
-> Add screenshots of each component variant here once the showcase site is deployed.
-> Suggested layout: 4×3 grid (one row per component, one screenshot per variant).
+There are no bundled screenshots. Run Storybook locally to preview every
+component and variant interactively:
 
-- `docs/screenshots/card-default.png`
-- `docs/screenshots/card-featured.png`
-- `docs/screenshots/accordion.png`
-- `docs/screenshots/tabs.png`
-- `docs/screenshots/hero-split.png`
+```bash
+cd storybook
+npm install
+npm run storybook
+```
+
+Then open <http://localhost:6006>.
 
 ## Paragraph & block integration
 

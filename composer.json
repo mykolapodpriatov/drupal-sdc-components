@@ -1,10 +1,16 @@
 {
-    "name": "nikolaj/sdc-library",
+    "name": "mykolapodpriatov/drupal-sdc-components",
     "description": "Reusable Single Directory Components library for Drupal 10.3+/11 — Card, Accordion, Tabs, Hero.",
     "type": "drupal-module",
     "license": "MIT",
     "keywords": ["drupal", "sdc", "single-directory-components", "components", "ui", "drupal-module"],
-    "homepage": "https://www.drupal.org/project/sdc_library",
+    "homepage": "https://github.com/mykolapodpriatov/drupal-sdc-components",
+    "authors": [
+        {
+            "name": "Mykola Podpriatov",
+            "role": "Maintainer"
+        }
+    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=8.3",
