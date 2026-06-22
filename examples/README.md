@@ -23,6 +23,10 @@ This creates:
 - `field.field.paragraph.card_paragraph.field_body` — long text (formatted).
 - `field.field.paragraph.card_paragraph.field_image` — image reference.
 - `field.field.paragraph.card_paragraph.field_variant` — list (default / featured / compact).
+- `field.field.paragraph.card_paragraph.field_cta_link` — link (the footer-slot CTA).
+
+It requires the `link`, `options`, `text`, `image` and `paragraphs` modules
+to be enabled first.
 
 ### 2. Override the paragraph template
 
@@ -40,8 +44,11 @@ and to override the `footer` slot with a paragraph reference field (`field_cta_l
 
 ### 3. Author content
 
-Add a Paragraphs reference field (`field_components`) to any node bundle, allow
-the `card_paragraph` type on it, and start authoring. Every paragraph instance
+On your own host bundle, add an Entity reference revisions field that targets
+paragraphs (for example `field_components` on the Article node type), allow the
+`card_paragraph` type on it, and start authoring. That host field is project
+specific, so it is **not** shipped under `examples/config/` — only the
+`card_paragraph` bundle and its fields are. Every paragraph instance you add
 will render through the Card SDC component.
 
 ## Block → Hero
