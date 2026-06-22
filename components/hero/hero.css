@@ -7,11 +7,11 @@
  */
 
 .c-hero {
-  --c-hero-bg: var(--color-surface, #ffffff);
+  --c-hero-bg: var(--color-surface, #fff);
   --c-hero-fg: var(--color-text, #1a1a1a);
   --c-hero-muted: var(--color-text-muted, #5a5a5a);
   --c-hero-accent: var(--color-accent, #0a66c2);
-  --c-hero-accent-fg: var(--color-accent-fg, #ffffff);
+  --c-hero-accent-fg: var(--color-accent-fg, #fff);
   --c-hero-radius: 1rem;
   --c-hero-padding-block: clamp(3rem, 6vw + 1rem, 6rem);
   --c-hero-padding-inline: clamp(1.25rem, 4vw, 3rem);
@@ -117,8 +117,9 @@
 /* Full — background image with text overlay. */
 .c-hero--full {
   --c-hero-bg: var(--color-bg-strong, #0a1019);
-  --c-hero-fg: #ffffff;
-  --c-hero-muted: color-mix(in srgb, #ffffff 75%, transparent);
+  --c-hero-fg: #fff;
+  --c-hero-muted: color-mix(in srgb, #fff 75%, transparent);
+
   min-height: clamp(20rem, 60vh, 32rem);
   display: grid;
   align-items: end;
@@ -187,7 +188,7 @@
 }
 
 [data-theme="light"] .c-hero {
-  --c-hero-bg: var(--color-surface, #ffffff);
+  --c-hero-bg: var(--color-surface, #fff);
   --c-hero-fg: var(--color-text, #1a1a1a);
 }
 

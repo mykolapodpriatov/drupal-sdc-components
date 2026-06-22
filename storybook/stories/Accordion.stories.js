@@ -34,7 +34,12 @@ const el = (tag, props = {}, children = []) => {
   for (const [key, val] of Object.entries(props)) {
     if (key === 'class') node.className = val;
     else if (key === 'text') node.textContent = val;
-    else if (key.startsWith('data-') || key === 'name' || key === 'role' || key.startsWith('aria-')) {
+    else if (
+      key.startsWith('data-') ||
+      key === 'name' ||
+      key === 'role' ||
+      key.startsWith('aria-')
+    ) {
       node.setAttribute(key, val);
     } else {
       node[key] = val;
@@ -69,7 +74,11 @@ const render = ({ items, allow_multiple, variant }) => {
   const v = variant || 'default';
   const groupName = allow_multiple ? '' : `sdc-acc-${Math.random().toString(36).slice(2)}`;
   const root = el('div', {
-    class: ['c-accordion', `c-accordion--${v}`, allow_multiple ? 'c-accordion--multi' : 'c-accordion--single'].join(' '),
+    class: [
+      'c-accordion',
+      `c-accordion--${v}`,
+      allow_multiple ? 'c-accordion--multi' : 'c-accordion--single',
+    ].join(' '),
     'data-component': 'accordion',
     'data-allow-multiple': String(Boolean(allow_multiple)),
   });
@@ -92,9 +101,18 @@ const render = ({ items, allow_multiple, variant }) => {
 };
 
 const sampleItems = [
-  { title: 'What is SDC?', body: 'Single Directory Components — a Drupal core feature for shipping self-contained UI components.' },
-  { title: 'Which Drupal version?', body: 'Drupal 10.3 and above. Stable since 10.3 and recommended for new code in 11.x.' },
-  { title: 'Can I use it in a theme?', body: 'Yes — themes and modules can both define and consume components.' },
+  {
+    title: 'What is SDC?',
+    body: 'Single Directory Components — a Drupal core feature for shipping self-contained UI components.',
+  },
+  {
+    title: 'Which Drupal version?',
+    body: 'Drupal 10.3 and above. Stable since 10.3 and recommended for new code in 11.x.',
+  },
+  {
+    title: 'Can I use it in a theme?',
+    body: 'Yes — themes and modules can both define and consume components.',
+  },
 ];
 
 export const SingleOpen = {

@@ -28,7 +28,15 @@ const el = (tag, props = {}, children = []) => {
     if (val === undefined || val === null) continue;
     if (key === 'class') node.className = val;
     else if (key === 'text') node.textContent = val;
-    else if (key.startsWith('data-') || key.startsWith('aria-') || key === 'role' || key === 'tabindex' || key === 'type' || key === 'hidden') node.setAttribute(key, val);
+    else if (
+      key.startsWith('data-') ||
+      key.startsWith('aria-') ||
+      key === 'role' ||
+      key === 'tabindex' ||
+      key === 'type' ||
+      key === 'hidden'
+    )
+      node.setAttribute(key, val);
     else node[key] = val;
   }
   for (const child of children) {
@@ -107,11 +115,11 @@ export const ManyTabs = {
   args: {
     initial: 0,
     tabs: [
-      { label: 'One',   panel_id: 't1', content: 'One.' },
-      { label: 'Two',   panel_id: 't2', content: 'Two.' },
+      { label: 'One', panel_id: 't1', content: 'One.' },
+      { label: 'Two', panel_id: 't2', content: 'Two.' },
       { label: 'Three', panel_id: 't3', content: 'Three.' },
-      { label: 'Four',  panel_id: 't4', content: 'Four.' },
-      { label: 'Five',  panel_id: 't5', content: 'Five.' },
+      { label: 'Four', panel_id: 't4', content: 'Four.' },
+      { label: 'Five', panel_id: 't5', content: 'Five.' },
     ],
   },
 };
