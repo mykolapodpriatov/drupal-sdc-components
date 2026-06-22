@@ -47,7 +47,7 @@
     <p class="c-card__text">{{ body }}</p>
   </div>
 
-  {% if block('footer') is defined or footer is not empty %}
+  {% if footer is not empty %}
     <footer class="c-card__footer">
       {% block footer %}{{ footer }}{% endblock %}
     </footer>

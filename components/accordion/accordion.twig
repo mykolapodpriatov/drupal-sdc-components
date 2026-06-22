@@ -15,13 +15,18 @@
   allow_multiple ? 'c-accordion--multi' : 'c-accordion--single',
 ] %}
 
+{# Compute ONE shared group id before the loop so every <details> in single-open
+   mode shares the same name="…" and the browser groups them natively. Calling
+   random() inside the loop would give each item a unique name and break it. #}
+{% set accordion_group = 'sdc-accordion-' ~ random() %}
+
 <div
   class="{{ classes|join(' ') }}"
   data-component="accordion"
   data-allow-multiple="{{ allow_multiple ? 'true' : 'false' }}"
 >
   {% for item in items %}
-    <details class="c-accordion__item" name="{{ allow_multiple ? '' : 'sdc-accordion-' ~ random() }}">
+    <details class="c-accordion__item" name="{{ allow_multiple ? '' : accordion_group }}">
       <summary class="c-accordion__summary">
         <span class="c-accordion__title">{{ item.title }}</span>
         <svg
