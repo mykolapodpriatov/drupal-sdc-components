@@ -1,8 +1,11 @@
 # SDC Library
 
 [![CI](https://github.com/mykolapodpriatov/drupal-sdc-components/actions/workflows/ci.yml/badge.svg)](https://github.com/mykolapodpriatov/drupal-sdc-components/actions/workflows/ci.yml)
+[![Storybook](https://img.shields.io/badge/Storybook-live-ff4785?logo=storybook&logoColor=white)](https://mykolapodpriatov.github.io/drupal-sdc-components/)
 
 A reusable library of **Single Directory Components** (SDC) for Drupal 10.3+ / 11.
+
+📖 **Live component gallery:** <https://mykolapodpriatov.github.io/drupal-sdc-components/> — every component rendered in the browser (built from this repo by GitHub Actions, no install needed).
 
 Ships four production-ready components — **Card**, **Accordion**, **Tabs**, **Hero** — with
 proper component schemas, slots, modern CSS and vanilla JS where it adds value. Any theme
