@@ -1,5 +1,7 @@
 # SDC Library
 
+[![CI](https://github.com/mykolapodpriatov/drupal-sdc-components/actions/workflows/ci.yml/badge.svg)](https://github.com/mykolapodpriatov/drupal-sdc-components/actions/workflows/ci.yml)
+
 A reusable library of **Single Directory Components** (SDC) for Drupal 10.3+ / 11.
 
 Ships four production-ready components — **Card**, **Accordion**, **Tabs**, **Hero** — with
