@@ -82,11 +82,15 @@ Don't add issue numbers in the subject line — put them in the body.
 ```bash
 composer install
 composer phpcs                       # Drupal coding standards
-cd storybook && npm install && npm run lint
+
+npm install                          # root dev tooling (stylelint + prettier)
+npm run lint                         # stylelint on CSS + prettier --check on JS
+npm run format                       # auto-format JS with prettier
 ```
 
-The CI workflow (`.github/workflows/ci.yml`) runs the same checks plus yamllint
-on all `.component.yml` files.
+Config lives in `.stylelintrc.json` and `.prettierrc.json` at the repo root, so
+local runs match CI. The CI workflow (`.github/workflows/ci.yml`) runs the same
+checks plus yamllint on all `.component.yml` files.
 
 ## Questions?
 

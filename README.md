@@ -152,10 +152,15 @@ Visit <http://localhost:6006>. See [`storybook/README.md`](./storybook/README.md
 ```bash
 composer install
 composer phpcs            # Drupal coding standards
-cd storybook && npm run lint
+
+npm install              # root dev tooling: stylelint + prettier
+npm run lint             # stylelint on CSS + prettier --check on JS
+npm run format           # auto-format JS with prettier
 ```
 
-CI runs yamllint on component schemas, stylelint on CSS, prettier check on JS, and PHPCS on the `.module` file.
+Linting is driven by the committed `.stylelintrc.json` and `.prettierrc.json`,
+so local runs match CI exactly. CI runs yamllint on component schemas, stylelint
+on CSS, prettier check on JS, and PHPCS on the `.module` file.
 
 ## Accessibility
 

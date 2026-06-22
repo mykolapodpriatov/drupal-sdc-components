@@ -1,0 +1,25 @@
+{
+  "name": "drupal-sdc-components",
+  "version": "0.1.0",
+  "description": "Reusable Single Directory Components library for Drupal 10.3+/11 — Card, Accordion, Tabs, Hero.",
+  "license": "MIT",
+  "author": "Mykola Podpriatov",
+  "homepage": "https://github.com/mykolapodpriatov/drupal-sdc-components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mykolapodpriatov/drupal-sdc-components.git"
+  },
+  "private": true,
+  "scripts": {
+    "lint:css": "stylelint \"components/**/*.css\"",
+    "lint:css:fix": "stylelint --fix \"components/**/*.css\"",
+    "lint:js": "prettier --check \"components/**/*.js\" \"storybook/stories/**/*.js\" \"storybook/.storybook/**/*.js\"",
+    "format": "prettier --write \"components/**/*.js\" \"storybook/stories/**/*.js\" \"storybook/.storybook/**/*.js\"",
+    "lint": "npm run lint:css && npm run lint:js"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.0",
+    "stylelint": "^16.6.0",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}
