@@ -6,7 +6,7 @@
  */
 
 .c-tabs {
-  --c-tabs-bg: var(--color-surface, #ffffff);
+  --c-tabs-bg: var(--color-surface, #fff);
   --c-tabs-fg: var(--color-text, #1a1a1a);
   --c-tabs-muted: var(--color-text-muted, #5a5a5a);
   --c-tabs-border: var(--color-border, #e4e4e7);

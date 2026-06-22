@@ -99,7 +99,8 @@ export const Split = {
   render,
   args: {
     heading: 'Build faster with SDC',
-    subheading: 'A drop-in component library for Drupal 11. Card, Accordion, Tabs and Hero — production-ready out of the box.',
+    subheading:
+      'A drop-in component library for Drupal 11. Card, Accordion, Tabs and Hero — production-ready out of the box.',
     image_src: 'https://picsum.photos/seed/hero-split/960/600',
     image_alt: 'Abstract gradient',
     cta_label: 'Get started',

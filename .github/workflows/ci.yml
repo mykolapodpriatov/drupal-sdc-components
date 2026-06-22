@@ -33,15 +33,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Install stylelint
-        run: |
-          npm init -y > /dev/null
-          npm install --no-save stylelint@^16 stylelint-config-standard@^36
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run stylelint
-        run: |
-          npx stylelint --config '{"extends": "stylelint-config-standard", "rules": {"selector-class-pattern": null, "no-descending-specificity": null, "media-feature-range-notation": null, "alpha-value-notation": null, "color-function-notation": null, "custom-property-pattern": null}}' "components/**/*.css"
+        run: npx stylelint "components/**/*.css"
 
   prettier:
     name: Prettier (component JS + stories)
@@ -52,9 +50,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Install prettier
-        run: npm install --no-save prettier@^3
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run prettier --check
         run: |
@@ -82,6 +81,8 @@ jobs:
 
       - name: Install Drupal coder + PHPCS
         run: |
+          composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global config --no-plugins allow-plugins.composer/installers true
           composer global require --no-interaction "drupal/coder:^8.3" "dealerdirect/phpcodesniffer-composer-installer:^1.0"
           echo "${HOME}/.composer/vendor/bin" >> "$GITHUB_PATH"
 
