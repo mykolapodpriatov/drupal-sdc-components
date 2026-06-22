@@ -50,7 +50,3 @@ props:
         - split
         - compact
       default: split
-
-libraryOverrides:
-  dependencies:
-    - core/drupal
