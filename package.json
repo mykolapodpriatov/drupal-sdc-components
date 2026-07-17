@@ -15,6 +15,7 @@
     "lint:css:fix": "stylelint --fix \"components/**/*.css\"",
     "lint:js": "prettier --check \"components/**/*.js\" \"storybook/stories/**/*.js\" \"storybook/.storybook/**/*.js\"",
     "format": "prettier --write \"components/**/*.js\" \"storybook/stories/**/*.js\" \"storybook/.storybook/**/*.js\"",
+    "validate": "node scripts/validate-components.mjs",
     "lint": "npm run lint:css && npm run lint:js"
   },
   "devDependencies": {
