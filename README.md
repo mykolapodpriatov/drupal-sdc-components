@@ -7,9 +7,9 @@ A reusable library of **Single Directory Components** (SDC) for Drupal 10.3+ / 1
 
 📖 **Live component gallery:** <https://mykolapodpriatov.github.io/drupal-sdc-components/> — every component rendered in the browser (built from this repo by GitHub Actions, no install needed).
 
-Ships four production-ready components — **Card**, **Accordion**, **Tabs**, **Hero** — with
-proper component schemas, slots, modern CSS and vanilla JS where it adds value. Any theme
-(or other module) can pull them in via Twig:
+Ships five production-ready components — **Card**, **Accordion**, **Tabs**, **Hero**,
+**Breadcrumb** — with proper component schemas, slots, modern CSS and vanilla JS where it
+adds value. Any theme (or other module) can pull them in via Twig:
 
 ```twig
 {% include 'sdc_library:card' with {
@@ -38,6 +38,7 @@ See the official docs: <https://www.drupal.org/docs/develop/theming-drupal/using
 | `sdc_library:accordion`  | Native `<details>` accordion                  | `default`, `bordered`          |
 | `sdc_library:tabs`       | ARIA tablist with full keyboard nav           | (single style, themeable)      |
 | `sdc_library:hero`       | Page-top hero                                 | `full`, `split`, `compact`     |
+| `sdc_library:breadcrumb` | Accessible breadcrumb trail (`<nav>`/`<ol>`)  | (single style, themeable)      |
 
 ## Installation
 
@@ -120,6 +121,19 @@ That's it — components are auto-discovered. No further configuration needed.
   cta_label: 'Get started',
   cta_url: '/docs',
   variant: 'split',
+} %}
+```
+
+### Breadcrumb
+
+```twig
+{% include 'sdc_library:breadcrumb' with {
+  items: [
+    { title: 'Home',          url: '/' },
+    { title: 'Documentation', url: '/docs' },
+    { title: 'Breadcrumb' },
+  ],
+  separator: '/',
 } %}
 ```
 

@@ -1,0 +1,82 @@
+/**
+ * Breadcrumb component.
+ *
+ * Tokens are exposed as CSS custom properties so consuming themes can override
+ * them without touching the component source.
+ */
+
+.c-breadcrumb {
+  --c-breadcrumb-gap: 0.5rem;
+  --c-breadcrumb-fg: var(--color-text-muted, #5a5a5a);
+  --c-breadcrumb-link: var(--color-text, #1a1a1a);
+  --c-breadcrumb-accent: var(--color-accent, #0a66c2);
+  --c-breadcrumb-current: var(--color-text, #1a1a1a);
+  --c-breadcrumb-separator: var(--color-border, #9a9a9a);
+  --c-breadcrumb-font-size: 0.875rem;
+  --c-breadcrumb-radius: 2px;
+  --c-breadcrumb-transition: 200ms ease;
+
+  font-size: var(--c-breadcrumb-font-size);
+  line-height: 1.4;
+  color: var(--c-breadcrumb-fg);
+}
+
+.c-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--c-breadcrumb-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.c-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--c-breadcrumb-gap);
+}
+
+/* Links ------------------------------------------------------------------- */
+
+.c-breadcrumb__link {
+  color: var(--c-breadcrumb-link);
+  text-decoration: none;
+  border-radius: var(--c-breadcrumb-radius);
+  transition: color var(--c-breadcrumb-transition);
+}
+
+.c-breadcrumb__link:hover {
+  color: var(--c-breadcrumb-accent);
+  text-decoration: underline;
+}
+
+.c-breadcrumb__link:focus-visible {
+  outline: 2px solid var(--c-breadcrumb-accent);
+  outline-offset: 3px;
+}
+
+/* Current page + plain text ----------------------------------------------- */
+
+.c-breadcrumb__current {
+  color: var(--c-breadcrumb-current);
+  font-weight: 600;
+}
+
+.c-breadcrumb__text {
+  color: var(--c-breadcrumb-fg);
+}
+
+/* Separator --------------------------------------------------------------- */
+
+.c-breadcrumb__separator {
+  color: var(--c-breadcrumb-separator);
+  user-select: none;
+}
+
+/* Reduced motion ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .c-breadcrumb__link {
+    transition: none;
+  }
+}

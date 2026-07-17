@@ -1,0 +1,49 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Breadcrumb
+status: stable
+description: 'Accessible breadcrumb trail — a semantic <nav>/<ol> where the final item is rendered as the current page (unlinked, aria-current="page").'
+
+props:
+  type: object
+  required:
+    - items
+  properties:
+    items:
+      type: array
+      title: Items
+      description: 'Ordered list of {title, url} pairs, from the site root to the current page. The last item is rendered unlinked as the current page.'
+      items:
+        type: object
+        required:
+          - title
+        properties:
+          title:
+            type: string
+            title: Title
+            description: 'Visible label for the crumb.'
+          url:
+            type:
+              - string
+              - 'null'
+            title: URL
+            description: 'Link target. Omit (or null) on the last item — it is never linked.'
+    separator:
+      type: string
+      title: Separator
+      description: 'Decorative glyph rendered between crumbs. Hidden from assistive tech.'
+      default: '/'
+      examples:
+        - '/'
+        - '›'
+    aria_label:
+      type: string
+      title: 'ARIA label'
+      description: 'Accessible name for the <nav> landmark. Defaults to "Breadcrumb".'
+      default: Breadcrumb
+      examples:
+        - Breadcrumb
+
+libraryOverrides:
+  dependencies:
+    - core/drupal
