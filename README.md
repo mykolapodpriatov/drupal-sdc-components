@@ -7,9 +7,9 @@ A reusable library of **Single Directory Components** (SDC) for Drupal 10.3+ / 1
 
 📖 **Live component gallery:** <https://mykolapodpriatov.github.io/drupal-sdc-components/> — every component rendered in the browser (built from this repo by GitHub Actions, no install needed).
 
-Ships six production-ready components — **Card**, **Accordion**, **Tabs**, **Hero**,
-**Breadcrumb**, **Alert** — with proper component schemas, slots, modern CSS and vanilla JS
-where it adds value. Any theme (or other module) can pull them in via Twig:
+Ships seven production-ready components — **Card**, **Accordion**, **Tabs**, **Hero**,
+**Breadcrumb**, **Alert**, **Pager** — with proper component schemas, slots, modern CSS and
+vanilla JS where it adds value. Any theme (or other module) can pull them in via Twig:
 
 ```twig
 {% include 'sdc_library:card' with {
@@ -40,6 +40,7 @@ See the official docs: <https://www.drupal.org/docs/develop/theming-drupal/using
 | `sdc_library:hero`       | Page-top hero                                 | `full`, `split`, `compact`     |
 | `sdc_library:breadcrumb` | Accessible breadcrumb trail (`<nav>`/`<ol>`)  | (single style, themeable)      |
 | `sdc_library:alert`      | Status message with optional dismiss button   | `info`, `success`, `warning`, `error` |
+| `sdc_library:pager`      | Accessible pagination (`<nav>`/`<ul>`)        | (single style, themeable)      |
 
 ## Installation
 

@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * Pager component.
+ *
+ * Props:
+ *   - items (array of {label, url, current}, required)
+ *   - current_page (integer, default 1)
+ *   - total_pages (integer, default 1)
+ *   - prev_url (string|null)
+ *   - next_url (string|null)
+ *
+ * Renders a semantic <nav>/<ul>. The active page is unlinked and carries
+ * aria-current="page". The Previous/Next controls become disabled <span>s
+ * (aria-disabled) when their target URL is absent, and a visually hidden
+ * status line reports the current position to assistive technology.
+ */
+#}
+{% set current_page = current_page|default(1) %}
+{% set total_pages = total_pages|default(1) %}
+
+<nav class="c-pager" aria-label="Pagination" data-component="pager">
+  <span class="c-pager__status">Page {{ current_page }} of {{ total_pages }}</span>
+
+  <ul class="c-pager__list">
+    <li class="c-pager__item c-pager__item--prev">
+      {% if prev_url %}
+        <a class="c-pager__link c-pager__link--prev" href="{{ prev_url }}" rel="prev">
+          <span aria-hidden="true">‹</span> Previous
+        </a>
+      {% else %}
+        <span class="c-pager__link c-pager__link--prev is-disabled" aria-disabled="true">
+          <span aria-hidden="true">‹</span> Previous
+        </span>
+      {% endif %}
+    </li>
+
+    {% for item in items %}
+      <li class="c-pager__item">
+        {% if item.current %}
+          <span class="c-pager__link c-pager__current" aria-current="page">{{ item.label }}</span>
+        {% elseif item.url %}
+          <a class="c-pager__link" href="{{ item.url }}">{{ item.label }}</a>
+        {% else %}
+          <span class="c-pager__link c-pager__ellipsis" aria-hidden="true">{{ item.label }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+
+    <li class="c-pager__item c-pager__item--next">
+      {% if next_url %}
+        <a class="c-pager__link c-pager__link--next" href="{{ next_url }}" rel="next">
+          Next <span aria-hidden="true">›</span>
+        </a>
+      {% else %}
+        <span class="c-pager__link c-pager__link--next is-disabled" aria-disabled="true">
+          Next <span aria-hidden="true">›</span>
+        </span>
+      {% endif %}
+    </li>
+  </ul>
+</nav>

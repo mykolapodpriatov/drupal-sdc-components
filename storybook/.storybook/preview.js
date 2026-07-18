@@ -10,6 +10,7 @@ import '../../components/accordion/accordion.css';
 import '../../components/tabs/tabs.css';
 import '../../components/hero/hero.css';
 import '../../components/alert/alert.css';
+import '../../components/pager/pager.css';
 
 /** @type {import('@storybook/html').Preview} */
 const preview = {

@@ -1,0 +1,70 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Pager
+status: stable
+description: 'Accessible pagination — a semantic <nav>/<ul> where the current page carries aria-current="page" and the prev/next controls disable themselves when there is nowhere to go.'
+
+props:
+  type: object
+  required:
+    - items
+  properties:
+    items:
+      type: array
+      title: Items
+      description: 'Ordered list of {label, url, current} page links. Mark the active page with current: true (rendered unlinked, aria-current="page"). A label-only item with no url renders as an ellipsis gap.'
+      items:
+        type: object
+        required:
+          - label
+        properties:
+          label:
+            type:
+              - string
+              - integer
+            title: Label
+            description: 'Visible text — usually the page number, or an ellipsis.'
+          url:
+            type:
+              - string
+              - 'null'
+            title: URL
+            description: 'Link target. Omit on the current page and on ellipsis gaps.'
+          current:
+            type: boolean
+            title: Current
+            description: 'When true, this item is the active page (unlinked, aria-current="page").'
+    current_page:
+      type: integer
+      title: 'Current page'
+      description: 'Number of the active page. Used for the screen-reader status text.'
+      default: 1
+      examples:
+        - 3
+    total_pages:
+      type: integer
+      title: 'Total pages'
+      description: 'Total number of pages. Used for the screen-reader status text.'
+      default: 1
+      examples:
+        - 10
+    prev_url:
+      type:
+        - string
+        - 'null'
+      title: 'Previous URL'
+      description: 'Target for the "Previous" control. Omit (or null) on the first page to render it disabled.'
+      examples:
+        - '/blog?page=1'
+    next_url:
+      type:
+        - string
+        - 'null'
+      title: 'Next URL'
+      description: 'Target for the "Next" control. Omit (or null) on the last page to render it disabled.'
+      examples:
+        - '/blog?page=3'
+
+libraryOverrides:
+  dependencies:
+    - core/drupal
