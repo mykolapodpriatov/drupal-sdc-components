@@ -9,6 +9,7 @@ import '../../components/card/card.css';
 import '../../components/accordion/accordion.css';
 import '../../components/tabs/tabs.css';
 import '../../components/hero/hero.css';
+import '../../components/alert/alert.css';
 
 /** @type {import('@storybook/html').Preview} */
 const preview = {

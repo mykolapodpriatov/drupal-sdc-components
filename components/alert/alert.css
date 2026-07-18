@@ -1,0 +1,128 @@
+/**
+ * Alert / status message component.
+ *
+ * Four severity variants (info, success, warning, error). Colour tokens are
+ * exposed as CSS custom properties so consuming themes can retheme without
+ * touching the component source.
+ */
+
+.c-alert {
+  --c-alert-gap: 0.75rem;
+  --c-alert-padding: 0.875rem 1rem;
+  --c-alert-radius: 6px;
+  --c-alert-border-width: 1px;
+  --c-alert-font-size: 0.9375rem;
+  --c-alert-line-height: 1.5;
+  --c-alert-bg: #eef2f7;
+  --c-alert-fg: var(--color-text, #1a1a1a);
+  --c-alert-accent: var(--color-accent, #0a66c2);
+  --c-alert-transition: 200ms ease;
+
+  display: flex;
+  gap: var(--c-alert-gap);
+  align-items: flex-start;
+  padding: var(--c-alert-padding);
+  font-size: var(--c-alert-font-size);
+  line-height: var(--c-alert-line-height);
+  color: var(--c-alert-fg);
+  background: var(--c-alert-bg);
+  border: var(--c-alert-border-width) solid var(--c-alert-accent);
+  border-left-width: 4px;
+  border-radius: var(--c-alert-radius);
+}
+
+/* Variants ---------------------------------------------------------------- */
+
+.c-alert--info {
+  --c-alert-accent: #0a66c2;
+  --c-alert-bg: #eaf2fb;
+}
+
+.c-alert--success {
+  --c-alert-accent: #1a7f37;
+  --c-alert-bg: #e8f5ec;
+}
+
+.c-alert--warning {
+  --c-alert-accent: #9a6700;
+  --c-alert-bg: #fbf3e2;
+}
+
+.c-alert--error {
+  --c-alert-accent: #c1121f;
+  --c-alert-bg: #fbeaec;
+}
+
+/* Icon -------------------------------------------------------------------- */
+
+.c-alert__icon {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.15rem;
+  background: var(--c-alert-accent);
+  border-radius: 50%;
+}
+
+/* Content ----------------------------------------------------------------- */
+
+.c-alert__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.c-alert__title {
+  margin: 0 0 0.15rem;
+  font-weight: 600;
+}
+
+.c-alert__body {
+  margin: 0;
+}
+
+.c-alert__body > :last-child {
+  margin-bottom: 0;
+}
+
+/* Close button ------------------------------------------------------------ */
+
+.c-alert__close {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: var(--c-alert-radius);
+  opacity: 0.7;
+  transition: opacity var(--c-alert-transition);
+}
+
+.c-alert__close:hover {
+  opacity: 1;
+}
+
+.c-alert__close:focus-visible {
+  outline: 2px solid var(--c-alert-accent);
+  outline-offset: 2px;
+}
+
+/* Dismiss animation ------------------------------------------------------- */
+
+.c-alert.is-dismissing {
+  opacity: 0;
+  transition: opacity var(--c-alert-transition);
+}
+
+/* Reduced motion ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .c-alert__close,
+  .c-alert.is-dismissing {
+    transition: none;
+  }
+}
