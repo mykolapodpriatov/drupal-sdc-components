@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Alert / status message component.
+ *
+ * Props:
+ *   - variant (info|success|warning|error, default 'info')
+ *   - title (string|null)
+ *   - dismissible (boolean, default false)
+ *
+ * Slots:
+ *   - body
+ *
+ * info/success render as role="status" (announced politely); warning/error
+ * render as role="alert" (announced assertively) so screen readers surface
+ * them with the right urgency. When dismissible, alert.js wires the close
+ * button as progressive enhancement — the alert is fully usable without JS.
+ */
+#}
+{% set variant = variant|default('info') %}
+{% set dismissible = dismissible|default(false) %}
+{% set assertive = variant in ['warning', 'error'] %}
+{% set role = assertive ? 'alert' : 'status' %}
+{% set live = assertive ? 'assertive' : 'polite' %}
+{% set classes = [
+  'c-alert',
+  'c-alert--' ~ variant,
+] %}
+
+<div
+  class="{{ classes|join(' ') }}"
+  role="{{ role }}"
+  aria-live="{{ live }}"
+  data-component="alert"
+  data-variant="{{ variant }}"
+>
+  <span class="c-alert__icon" aria-hidden="true"></span>
+
+  <div class="c-alert__content">
+    {% if title %}
+      <p class="c-alert__title">{{ title }}</p>
+    {% endif %}
+
+    <div class="c-alert__body">
+      {% block body %}{{ body }}{% endblock %}
+    </div>
+  </div>
+
+  {% if dismissible %}
+    <button type="button" class="c-alert__close" aria-label="Dismiss">
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M2 2l10 10M12 2L2 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+    </button>
+  {% endif %}
+</div>

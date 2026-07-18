@@ -1,0 +1,107 @@
+/**
+ * Pager component.
+ *
+ * Accessible pagination — a semantic <nav>/<ul> with the current page marked
+ * via aria-current and prev/next controls that render as disabled spans when
+ * there is no target. Tokens are exposed as CSS custom properties so consuming
+ * themes can retheme without touching the component source.
+ */
+
+.c-pager {
+  --c-pager-gap: 0.25rem;
+  --c-pager-size: 2.25rem;
+  --c-pager-fg: var(--color-text, #1a1a1a);
+  --c-pager-muted: var(--color-text-muted, #5a5a5a);
+  --c-pager-accent: var(--color-accent, #0a66c2);
+  --c-pager-border: var(--color-border, #d0d5dd);
+  --c-pager-current-fg: #fff;
+  --c-pager-radius: 6px;
+  --c-pager-font-size: 0.9375rem;
+  --c-pager-transition: 200ms ease;
+
+  font-size: var(--c-pager-font-size);
+  color: var(--c-pager-fg);
+}
+
+.c-pager__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--c-pager-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Links & controls -------------------------------------------------------- */
+
+.c-pager__link {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--c-pager-size);
+  height: var(--c-pager-size);
+  padding: 0 0.6rem;
+  color: var(--c-pager-fg);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--c-pager-border);
+  border-radius: var(--c-pager-radius);
+  transition: color var(--c-pager-transition), background var(--c-pager-transition),
+    border-color var(--c-pager-transition);
+}
+
+a.c-pager__link:hover {
+  color: var(--c-pager-accent);
+  border-color: var(--c-pager-accent);
+}
+
+.c-pager__link:focus-visible {
+  outline: 2px solid var(--c-pager-accent);
+  outline-offset: 2px;
+}
+
+/* Current page ------------------------------------------------------------ */
+
+.c-pager__current {
+  font-weight: 600;
+  color: var(--c-pager-current-fg);
+  background: var(--c-pager-accent);
+  border-color: var(--c-pager-accent);
+}
+
+/* Disabled prev / next ---------------------------------------------------- */
+
+.c-pager__link.is-disabled {
+  color: var(--c-pager-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Ellipsis gap ------------------------------------------------------------ */
+
+.c-pager__ellipsis {
+  border-color: transparent;
+}
+
+/* Screen-reader-only status ----------------------------------------------- */
+
+.c-pager__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .c-pager__link {
+    transition: none;
+  }
+}

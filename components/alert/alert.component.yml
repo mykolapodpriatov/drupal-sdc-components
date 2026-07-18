@@ -1,0 +1,41 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Alert
+status: stable
+description: 'Status message / alert with four severity variants and an optional dismiss button. Announces itself to assistive tech via role="status" (info/success) or role="alert" (warning/error).'
+
+props:
+  type: object
+  properties:
+    variant:
+      type: string
+      title: Variant
+      description: 'Severity of the message. info/success announce politely (role="status"); warning/error announce assertively (role="alert").'
+      enum:
+        - info
+        - success
+        - warning
+        - error
+      default: info
+    title:
+      type:
+        - string
+        - 'null'
+      title: Title
+      description: 'Optional bold heading shown above the body.'
+      examples:
+        - 'Changes saved'
+    dismissible:
+      type: boolean
+      title: Dismissible
+      description: 'When true, renders a close button that removes the alert. Progressive enhancement — needs JS.'
+      default: false
+
+slots:
+  body:
+    title: Body
+    description: 'Message content. Plain text or markup-safe HTML.'
+
+libraryOverrides:
+  dependencies:
+    - core/drupal

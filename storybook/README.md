@@ -62,6 +62,24 @@ npm run format   # prettier --write
 
 CI runs the prettier check on every push (see `.github/workflows/ci.yml`).
 
+## Accessibility panel
+
+Every story is checked for accessibility issues automatically. The
+[`@storybook/addon-a11y`](https://storybook.js.org/addons/@storybook/addon-a11y)
+addon — registered in `.storybook/main.js` — runs
+[axe-core](https://github.com/dequelabs/axe-core) against the rendered
+component and reports the results in a new **Accessibility** panel in the
+Storybook addons tray.
+
+- Open any story, then select the **Accessibility** tab in the bottom panel.
+- Violations, passes and incomplete checks are listed with the offending
+  element and a link to the rule documentation.
+- Checks run on every story render (`a11y.manual` is `false` in
+  `.storybook/preview.js`), so WCAG regressions surface as you browse.
+
+Everything runs in the browser — no network access or extra configuration is
+needed.
+
 ## Keeping stories in sync with components
 
 Each story file mirrors its component's Twig template exactly — when you
