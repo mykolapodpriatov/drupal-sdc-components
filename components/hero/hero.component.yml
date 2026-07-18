@@ -13,6 +13,8 @@ props:
       type: string
       title: Heading
       description: 'Rendered as <h1> inside the hero header.'
+      examples:
+        - 'Build faster with SDC'
     subheading:
       type:
         - string

@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Breadcrumb component.
+ *
+ * Props:
+ *   - items (array of {title, url}, required)
+ *   - separator (string, default '/')
+ *   - aria_label (string, default 'Breadcrumb')
+ *
+ * Renders a semantic <nav>/<ol> trail. The final item is treated as the
+ * current page: it is never linked and carries aria-current="page". The
+ * separator is decorative and hidden from assistive technology.
+ */
+#}
+{% set separator = separator|default('/') %}
+{% set aria_label = aria_label|default('Breadcrumb') %}
+
+<nav class="c-breadcrumb" aria-label="{{ aria_label }}" data-component="breadcrumb">
+  <ol class="c-breadcrumb__list">
+    {% for item in items %}
+      {% set is_last = loop.last %}
+      <li class="c-breadcrumb__item">
+        {% if is_last %}
+          <span class="c-breadcrumb__current" aria-current="page">{{ item.title }}</span>
+        {% elseif item.url %}
+          <a class="c-breadcrumb__link" href="{{ item.url }}">{{ item.title }}</a>
+        {% else %}
+          <span class="c-breadcrumb__text">{{ item.title }}</span>
+        {% endif %}
+
+        {% if not is_last %}
+          <span class="c-breadcrumb__separator" aria-hidden="true">{{ separator }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
