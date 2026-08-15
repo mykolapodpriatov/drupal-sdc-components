@@ -61,7 +61,7 @@ Before opening a PR, verify the component:
 - [ ] Has visible `:focus-visible` styles on all interactive elements.
 - [ ] Is fully usable with the keyboard (Tab to enter, arrows/Home/End where appropriate, Enter/Space to activate).
 - [ ] Announces state changes via `aria-*` only when native semantics aren't enough.
-- [ ] Passes [axe](https://www.deque.com/axe/) with zero violations on all variants.
+- [ ] Passes [axe](https://www.deque.com/axe/) with zero violations on all variants (`cd storybook && npm run test:a11y`; the CI `a11y` job runs the same check).
 - [ ] Respects `prefers-reduced-motion`.
 - [ ] Works in forced-colours mode (Windows High Contrast).
 
@@ -86,11 +86,16 @@ composer phpcs                       # Drupal coding standards
 npm install                          # root dev tooling (stylelint + prettier)
 npm run lint                         # stylelint on CSS + prettier --check on JS
 npm run format                       # auto-format JS with prettier
+
+cd storybook
+npm install
+npx playwright install chromium      # once per machine
+npm run test:a11y                    # build Storybook + axe-core on every story
 ```
 
 Config lives in `.stylelintrc.json` and `.prettierrc.json` at the repo root, so
 local runs match CI. The CI workflow (`.github/workflows/ci.yml`) runs the same
-checks plus yamllint on all `.component.yml` files.
+checks plus yamllint on all `.component.yml` files and the Storybook axe job.
 
 ## Questions?
 
