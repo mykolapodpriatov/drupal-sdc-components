@@ -32,8 +32,9 @@ controls panel values never produce executable markup.
 ```
 storybook/
 ├── .storybook/
-│   ├── main.js       # framework + addons + story glob
-│   └── preview.js    # global parameters, loads component CSS once
+│   ├── main.js          # framework + addons + story glob
+│   ├── preview.js       # global parameters, loads component CSS once
+│   └── test-runner.js   # axe-core via injectAxe / checkA11y on every story
 ├── stories/
 │   ├── Card.stories.js
 │   ├── Accordion.stories.js
@@ -79,6 +80,30 @@ Storybook addons tray.
 
 Everything runs in the browser — no network access or extra configuration is
 needed.
+
+## Automated axe-core checks (CI)
+
+The Accessibility panel is interactive only. CI fails the build when any
+story's rendered output has an [axe-core](https://github.com/dequelabs/axe-core)
+violation, using [`@storybook/test-runner`](https://storybook.js.org/addons/@storybook/test-runner)
+and [`axe-playwright`](https://github.com/abhinaba-ghosh/axe-playwright).
+
+`.storybook/test-runner.js` injects axe in `preVisit` and runs `checkA11y`
+in `postVisit` against `#storybook-root` (the same root the addon uses).
+
+```bash
+# once per machine — Playwright's Chromium binary
+npx playwright install chromium
+
+npm run test:a11y
+```
+
+That script builds the static Storybook, serves `storybook-static/` on
+port 6006, and runs `test-storybook` against it. The `a11y` job in
+`.github/workflows/ci.yml` runs the same command.
+
+A story can opt out with `parameters.a11y.disable` (same flag the addon
+respects). Do not use that to hide a real violation.
 
 ## Keeping stories in sync with components
 
