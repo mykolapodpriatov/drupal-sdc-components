@@ -17,6 +17,7 @@
     "@storybook/addon-interactions": "^8.4.0",
     "@storybook/html": "^8.4.0",
     "@storybook/html-vite": "^8.4.0",
+    "@storybook/test": "^8.4.0",
     "@storybook/test-runner": "^0.21.3",
     "axe-playwright": "^2.1.0",
     "concurrently": "^9.1.2",

@@ -105,6 +105,35 @@ port 6006, and runs `test-storybook` against it. The `a11y` job in
 A story can opt out with `parameters.a11y.disable` (same flag the addon
 respects). Do not use that to hide a real violation.
 
+## Interaction tests (`play` functions)
+
+The same `test:a11y` run also executes every story's `play` function (if it
+has one) as part of loading the story, and the `test-runner` job fails the
+build if a `play` function throws — same command, same CI job, no separate
+test runner. `Accordion.stories.js`, `Alert.stories.js`, `Card.stories.js`,
+and `Tabs.stories.js` use [`@storybook/test`](https://storybook.js.org/docs/writing-tests/interaction-testing)
+(`within`, `userEvent`, `expect`, `waitFor`) to drive real keyboard and
+pointer interactions and assert on the resulting ARIA/DOM state — the
+behaviour axe-core's markup snapshot can't exercise (roving tab focus,
+accordion single-open grouping, alert dismissal, card click-through).
+
+Two things worth knowing if you add more of these:
+
+- Holding a modifier key (Ctrl/Cmd) across two separate direct `userEvent.x()`
+  calls needs an explicitly shared `system` state — each direct call
+  otherwise starts a fresh input-device state and drops it. Capture the
+  value `userEvent.keyboard(...)` resolves to and pass it back in as
+  `{ keyboardState: system }` on the following call(s). See the modifier-click
+  assertion in `Card.stories.js` for a worked example.
+- Chromium only runs a native element's *default action* (e.g. toggling a
+  focused `<summary>` via Enter/Space) for a **trusted** event. `play`
+  functions run inside the page and dispatch synthetic events, so
+  `userEvent.keyboard('{Enter}')` on a `<summary>` will not toggle it even
+  though a real keypress does — `.click()`-based activation isn't
+  trust-gated the same way, which is why `Accordion.stories.js` asserts
+  toggle behaviour via clicks and only checks focusability for the keyboard
+  path.
+
 ## Keeping stories in sync with components
 
 Each story file mirrors its component's Twig template exactly — when you

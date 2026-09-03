@@ -5,6 +5,7 @@
  * XSS-safe even when args come from the Storybook controls panel.
  */
 
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { initAll as initAllAlerts } from '../../components/alert/alert.js';
 
 export default {
@@ -98,6 +99,12 @@ const render = ({ variant, title, body, dismissible }) => {
   );
 };
 
+/**
+ * Interaction test — a non-dismissible alert renders no close button, and
+ * alert.js's `init()` correctly no-ops (no `data-alert-enhanced` guard is
+ * written) when there is nothing to wire up. See alert.js: `init()` returns
+ * early when `.c-alert__close` isn't found.
+ */
 export const Info = {
   render,
   args: {
@@ -105,6 +112,13 @@ export const Info = {
     title: 'Heads up',
     body: 'A new version of the component library is available.',
     dismissible: false,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryByRole('button')).toBeNull();
+    await expect(canvasElement.querySelector('.c-alert')).not.toHaveAttribute(
+      'data-alert-enhanced',
+    );
   },
 };
 
@@ -138,6 +152,14 @@ export const Error = {
   },
 };
 
+/**
+ * Interaction test — dismissal. alert.js only implements click-to-dismiss on
+ * `.c-alert__close`; there is no Escape-key handling and no explicit focus
+ * management in the source, so this test does not assert either — it only
+ * covers the behaviour that actually exists: the `is-dismissing` class gets
+ * added immediately, and the alert removes itself from the DOM once the
+ * transition (or its 300ms fallback) finishes.
+ */
 export const Dismissible = {
   render,
   args: {
@@ -145,6 +167,16 @@ export const Dismissible = {
     title: 'Dismissible alert',
     body: 'Click the close button to remove this message.',
     dismissible: true,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const alertRoot = canvasElement.querySelector('.c-alert');
+    const closeButton = canvas.getByRole('button', { name: /dismiss/i });
+
+    await userEvent.click(closeButton);
+
+    await waitFor(() => expect(alertRoot).toHaveClass('is-dismissing'));
+    await waitFor(() => expect(canvasElement.contains(alertRoot)).toBe(false), { timeout: 1000 });
   },
 };
 

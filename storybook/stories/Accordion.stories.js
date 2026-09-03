@@ -5,6 +5,7 @@
  * XSS-safe even when args come from the Storybook controls panel.
  */
 
+import { expect, userEvent, waitFor, within } from '@storybook/test';
 import { initAll as initAllAccordions } from '../../components/accordion/accordion.js';
 
 export default {
@@ -115,14 +116,84 @@ const sampleItems = [
   },
 ];
 
+/**
+ * Interaction test — single-open grouping. Panels are native
+ * `<details name="…">` (see accordion.twig): the browser itself closes a
+ * sibling when a new one opens, which is why `allow_multiple: false` gives
+ * every item the same `name`. accordion.js only *adds* that grouping for
+ * browsers without native `details[name]` support; here we assert the
+ * observable state (`item.open`) rather than a literal `aria-expanded`
+ * attribute, since disclosure state is expressed purely via `open` — no such
+ * attribute is ever written to the DOM.
+ *
+ * Keyboard reachability (focus order) is asserted directly. Keyboard
+ * *activation* (Enter/Space toggling a focused `<summary>`) is native browser
+ * behaviour gated behind a trusted input event in Chromium — a synthetic
+ * `KeyboardEvent` dispatched by `@storybook/test`'s `userEvent.keyboard()`
+ * does not trigger it (verified: it does trigger a synthetic `click()`,
+ * which is why the toggle assertions below use clicks). This is a test-tooling
+ * ceiling, not a gap in accordion.js — real keyboard users get the toggle for
+ * free from the native element.
+ */
 export const SingleOpen = {
   render,
   args: { items: sampleItems, allow_multiple: false, variant: 'default' },
+  play: async ({ canvasElement }) => {
+    const root = canvasElement.querySelector('.c-accordion');
+    const items = canvasElement.querySelectorAll('.c-accordion__item');
+    const summaries = canvasElement.querySelectorAll('.c-accordion__summary');
+
+    // JS enhancement ran and marked the root.
+    await expect(root).toHaveClass('c-accordion--js');
+    await expect(root).toHaveAttribute('data-accordion-enhanced');
+
+    // Every summary is keyboard-focusable (native <summary> tab stop).
+    summaries[2].focus();
+    await expect(summaries[2]).toHaveFocus();
+
+    // Everything starts closed.
+    items.forEach((item) => expect(item.open).toBe(false));
+
+    // Opening the first item...
+    await userEvent.click(summaries[0]);
+    await waitFor(() => expect(items[0].open).toBe(true));
+
+    // ...then opening a second closes the first — single-open semantics.
+    await userEvent.click(summaries[1]);
+    await waitFor(() => expect(items[1].open).toBe(true));
+    await expect(items[0].open).toBe(false);
+
+    // ...then opening a third closes the second too.
+    await userEvent.click(summaries[2]);
+    await waitFor(() => expect(items[2].open).toBe(true));
+    await expect(items[1].open).toBe(false);
+
+    // A second activation of the same item closes what the first one opened.
+    await userEvent.click(summaries[2]);
+    await waitFor(() => expect(items[2].open).toBe(false));
+  },
 };
 
+/**
+ * Interaction test — `allow_multiple: true` gives each `<details>` its own
+ * empty `name`, so opening one item never closes another.
+ */
 export const AllowMultiple = {
   render,
   args: { items: sampleItems, allow_multiple: true, variant: 'default' },
+  play: async ({ canvasElement }) => {
+    const items = canvasElement.querySelectorAll('.c-accordion__item');
+    const summaries = canvasElement.querySelectorAll('.c-accordion__summary');
+
+    await userEvent.click(summaries[0]);
+    await waitFor(() => expect(items[0].open).toBe(true));
+
+    await userEvent.click(summaries[1]);
+    await waitFor(() => expect(items[1].open).toBe(true));
+
+    // Both remain open — no single-open grouping applies here.
+    await expect(items[0].open).toBe(true);
+  },
 };
 
 export const Bordered = {
