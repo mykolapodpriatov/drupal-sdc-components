@@ -6,6 +6,7 @@
  * stories XSS-safe even when args come from the Storybook controls panel.
  */
 
+import { expect, userEvent, within } from '@storybook/test';
 import { initAll as initAllCards } from '../../components/card/card.js';
 
 export default {
@@ -151,5 +152,77 @@ export const NoImage = {
     title: 'Text-only card',
     body: 'Skips the media slot entirely. Useful for quotes, notes, plain teasers.',
     variant: 'default',
+  },
+};
+
+/**
+ * Interaction test — whole-card click-through. card.js only enhances a card
+ * when it finds a `.c-card__link` (the title link), so this story sets both
+ * `url` (title link) and `footer_url` (a second, separate interactive link)
+ * to exercise every branch in card.js's click handler:
+ *   - clicking plain card body text follows the title link;
+ *   - clicking another interactive element (the footer link) is NOT
+ *     hijacked — it follows itself, not the title link;
+ *   - a modifier-click (Ctrl/Cmd) opens the title link in a new tab via
+ *     `window.open()` instead of navigating in place.
+ */
+export const InteractiveBehaviour = {
+  render,
+  args: {
+    title: 'Whole card is a click target',
+    body: 'Clicking anywhere on the card should follow the title link.',
+    variant: 'default',
+    url: '#sdc-card-clicked',
+    footer_label: 'Learn more',
+    footer_url: '#sdc-card-footer',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const titleLink = canvas.getByRole('link', { name: /whole card is a click target/i });
+    const footerLink = canvas.getByRole('link', { name: /learn more/i });
+    const bodyText = canvas.getByText(/clicking anywhere on the card/i);
+
+    let titleNavigated = false;
+    let footerNavigated = false;
+    titleLink.addEventListener('click', (event) => {
+      titleNavigated = true;
+      event.preventDefault();
+    });
+    footerLink.addEventListener('click', (event) => {
+      footerNavigated = true;
+      event.preventDefault();
+    });
+
+    // Clicking plain body text activates the title link via card.js.
+    await userEvent.click(bodyText);
+    await expect(titleNavigated).toBe(true);
+    await expect(footerNavigated).toBe(false);
+
+    titleNavigated = false;
+
+    // Clicking the footer link follows itself — card.js must not hijack it.
+    await userEvent.click(footerLink);
+    await expect(footerNavigated).toBe(true);
+    await expect(titleNavigated).toBe(false);
+
+    // Ctrl/Cmd-click on the card body opens the title link in a new tab
+    // instead of navigating in place. Holding a modifier across two separate
+    // userEvent calls requires sharing one input-device state (`system`) —
+    // each direct `userEvent.x()` call otherwise starts a fresh one, so a
+    // `{Control>}` held in one call is invisible to a `click()` in the next.
+    const originalOpen = window.open;
+    let openedWith = null;
+    window.open = (url) => {
+      openedWith = url;
+      return null;
+    };
+    try {
+      const system = await userEvent.keyboard('{Control>}');
+      await userEvent.click(bodyText, { keyboardState: system });
+      await userEvent.keyboard('{/Control}', { keyboardState: system });
+      await expect(openedWith).toContain('sdc-card-clicked');
+    } finally {
+      window.open = originalOpen;
+    }
   },
 };
