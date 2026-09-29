@@ -119,6 +119,34 @@
   transition: opacity var(--c-alert-transition);
 }
 
+/* Forced-colors / High Contrast support ------------------------------------
+ * Backgrounds are stripped to Canvas by the browser in forced-colors mode,
+ * so a plain `background`-only icon with no border would vanish. Give the
+ * container and icon an explicit system-color border so every variant stays
+ * visible; the two more urgent variants also pick up Highlight so they read
+ * as distinct from the two calmer ones. */
+@media (forced-colors: active) {
+  .c-alert {
+    border-color: CanvasText;
+  }
+
+  .c-alert__icon {
+    background: CanvasText;
+    border: 1px solid CanvasText;
+  }
+
+  .c-alert--warning .c-alert__icon,
+  .c-alert--error .c-alert__icon {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  .c-alert--warning,
+  .c-alert--error {
+    border-color: Highlight;
+  }
+}
+
 /* Reduced motion ---------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .c-alert__close,
