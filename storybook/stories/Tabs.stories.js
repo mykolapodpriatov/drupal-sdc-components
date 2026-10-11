@@ -194,3 +194,72 @@ export const KeyboardNavigation = {
     await expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
   },
 };
+
+/**
+ * The first tab points at an id that is not in the document. Later tabs must
+ * still show their own panels. Dropping the missing lookup used to shift
+ * every later panel up by one.
+ *
+ * a11y is off for this story: a dangling aria-controls is the case under test.
+ */
+export const MissingPanelKeepsLaterPanelsAligned = {
+  parameters: {
+    a11y: { disable: true },
+  },
+  render: () => {
+    const uid = `gap-${Math.random().toString(36).slice(2)}`;
+    const ids = [`${uid}-missing`, `${uid}-second`, `${uid}-third`];
+    const root = el('div', {
+      class: 'c-tabs',
+      'data-component': 'tabs',
+      'data-initial': '0',
+    });
+    const list = el('div', { class: 'c-tabs__list', role: 'tablist' });
+    ['One', 'Two', 'Three'].forEach((label, i) => {
+      list.appendChild(
+        el('button', {
+          type: 'button',
+          class: 'c-tabs__tab',
+          role: 'tab',
+          'aria-selected': i === 0 ? 'true' : 'false',
+          'aria-controls': ids[i],
+          tabindex: i === 0 ? '0' : '-1',
+          text: label,
+        }),
+      );
+    });
+    root.appendChild(list);
+    const panels = el('div', { class: 'c-tabs__panels' });
+    ['Second panel', 'Third panel'].forEach((text, i) => {
+      panels.appendChild(
+        el('section', {
+          id: ids[i + 1],
+          role: 'tabpanel',
+          text,
+        }),
+      );
+    });
+    root.appendChild(panels);
+    return root;
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const tabs = canvas.getAllByRole('tab');
+    const second = canvas.getByText('Second panel');
+    const third = canvas.getByText('Third panel');
+
+    await expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+    await expect(second).toHaveAttribute('hidden');
+    await expect(third).toHaveAttribute('hidden');
+
+    await userEvent.click(tabs[1]);
+    await expect(tabs[1]).toHaveAttribute('aria-selected', 'true');
+    await expect(second).not.toHaveAttribute('hidden');
+    await expect(third).toHaveAttribute('hidden');
+
+    await userEvent.click(tabs[2]);
+    await expect(tabs[2]).toHaveAttribute('aria-selected', 'true');
+    await expect(third).not.toHaveAttribute('hidden');
+    await expect(second).toHaveAttribute('hidden');
+  },
+};

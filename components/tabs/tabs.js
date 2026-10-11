@@ -27,9 +27,9 @@ export function init(root) {
     return;
   }
 
-  const panels = tabs
-    .map((tab) => document.getElementById(tab.getAttribute('aria-controls')))
-    .filter(Boolean);
+  // A missing aria-controls target stays a hole. Filtering it out shifts
+  // every later panel onto the wrong tab. activate() already skips null.
+  const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
 
   /**
    * Activate the tab at `index`. Focus it iff `focus` is true.
