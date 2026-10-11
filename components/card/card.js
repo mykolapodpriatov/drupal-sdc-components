@@ -35,27 +35,37 @@ export function init(root) {
     downY = event.clientY;
   });
 
-  root.addEventListener('click', (event) => {
+  const activate = (event) => {
     // Don't hijack actual interactive children (buttons, other links, form controls).
     if (event.target.closest('a, button, input, textarea, select, [role="button"]')) {
       return;
     }
 
-    // Detect text-selection drags — don't navigate if the user dragged.
+    // Detect text-selection drags. Don't navigate if the user dragged.
     const dx = Math.abs(event.clientX - downX);
     const dy = Math.abs(event.clientY - downY);
     if (dx > 4 || dy > 4) {
       return;
     }
 
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1) {
-      // Let the browser handle modified clicks — open the link manually
-      // so middle-click / cmd-click still opens in a new tab.
+    // `click` is only the primary button, so event.button === 1 never
+    // happens there. Middle-click arrives as auxclick.
+    const newTab = event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1;
+    if (newTab) {
+      event.preventDefault();
       window.open(link.href, '_blank', 'noopener');
       return;
     }
 
     link.click();
+  };
+
+  root.addEventListener('click', activate);
+  root.addEventListener('auxclick', (event) => {
+    if (event.button !== 1) {
+      return;
+    }
+    activate(event);
   });
 }
 

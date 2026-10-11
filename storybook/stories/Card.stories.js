@@ -221,6 +221,25 @@ export const InteractiveBehaviour = {
       await userEvent.click(bodyText, { keyboardState: system });
       await userEvent.keyboard('{/Control}', { keyboardState: system });
       await expect(openedWith).toContain('sdc-card-clicked');
+
+      // Middle-click is auxclick, not click. The card body should still open
+      // the title link in a new tab.
+      openedWith = null;
+      titleNavigated = false;
+      bodyText.dispatchEvent(
+        new MouseEvent('mousedown', { button: 1, clientX: 12, clientY: 12, bubbles: true }),
+      );
+      bodyText.dispatchEvent(
+        new MouseEvent('auxclick', {
+          button: 1,
+          clientX: 12,
+          clientY: 12,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      await expect(openedWith).toContain('sdc-card-clicked');
+      await expect(titleNavigated).toBe(false);
     } finally {
       window.open = originalOpen;
     }
